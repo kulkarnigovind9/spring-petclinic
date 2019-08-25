@@ -21,7 +21,7 @@ node {
    }
 
    stage('deploy to dev server'){
-     build job: 'petclinic-ansible-CD', parameters: [string(name: 'IMAGE_TAG', value: '$BUILD_NUMBER')]
+     build job: 'petclinic-ansible-CD', parameters: [string(name: 'IMAGE_TAG', value: $BUILD_NUMBER)]
    }
 
 }

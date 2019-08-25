@@ -11,7 +11,7 @@ services:
       - petclinic-datastore:/var/lib/mysql  
 
   pet-clinic:
-    image:  spring-petclinic:latest
+    image:  kulkarnigovind/petclinic:latest
     ports:
       - "8080:8080"
     depends_on:

@@ -21,5 +21,4 @@ node {
    stage('Trigger CD Job'){
      build job: 'petclinic-ansible-CD', parameters: [string(name: 'IMAGE_TAG', value: "$BUILD_NUMBER")]
    }
-
 }

@@ -1,9 +1,7 @@
 node {
 
    stage('Clone Repository') {
-        // Get some code from a GitHub repository
         git 'https://github.com/kulkarnigovind9/spring-petclinic.git'
-    
    }
    
    stage('Build App') {

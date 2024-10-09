@@ -15,7 +15,6 @@ jobs:
     steps:
         # Manual approval step (restricted to specific users)
     - uses: trstringer/manual-approval@v1
-      if: github.ref == 'refs/heads/main'
       with:
         secret: ${{ github.TOKEN }}
         approvers: kulkarnigovind9

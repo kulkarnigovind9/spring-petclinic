@@ -1,8 +1,9 @@
-FROM maven:3.8-openjdk-19 AS build
+FROM maven:3.8.7-eclipse-temurin-19 AS build
 WORKDIR /app
 COPY . .
-RUN mvn clean package -DskipTests -DbuildDirectory=out
+RUN mvn clean package -DskipTests
 
-FROM openjdk:19
-COPY --from=build /app/out/*.jar app.jar
-ENTRYPOINT ["java","-jar","app.jar"]
+FROM eclipse-temurin:19
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]

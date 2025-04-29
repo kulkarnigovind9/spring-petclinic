@@ -44,8 +44,11 @@ jobs:
       - name: Deploy DB to GKE
         uses: google-github-actions/deploy-gke@v0.0.1
         with:
-          image: 
+          image: ${{ env.IMAGE }}
+          app_name: pet-clinic-app
+          region: us-central1
           cluster_name: ${{ secrets.GKE_CLUSTER }}
+          project_id: personal-learning-437518
           location: ${{ secrets.GKE_ZONE }}
           manifest: k8s/db.yaml
 

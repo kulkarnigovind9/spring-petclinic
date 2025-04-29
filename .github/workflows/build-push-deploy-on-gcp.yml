@@ -1,5 +1,4 @@
 name: Build and Deploy to GKE
-
 on:
   push:
     branches: [ gke-automation ]
@@ -7,7 +6,7 @@ on:
 env:
   PROJECT_ID: ${{ secrets.PROJECT_ID }}
   GAR_LOCATION: gcr.io
-  IMAGE: us-central1-docker.pkg.dev/personal-learning-437518/pet-clinic/petclinic-app:${{ github.sha }}
+  IMAGE: "${{ secrets.REPO_URL }}:${{ github.sha }}"
 
 jobs:
   build-push-deploy:
@@ -20,9 +19,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-
-      # - name: Build with Maven
-      #   run: mvn clean package -DskipTests -DbuildDirectory=out
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
@@ -44,7 +40,7 @@ jobs:
       - name: Update image tag in deployment.yaml
         uses: Charlyzzz/update-k8s-image@v1.7.1
         with:
-          manifest-path: k8s/petclinic.yml
+          manifest-path: k8s/deploy.yml
           new-image-tag: ${{ github.sha }}
           container-name: workload
 

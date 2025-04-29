@@ -1,0 +1,39 @@
+name: Build and Deploy to GKE
+
+on:
+  push:
+    branches: [ gke-automation ]
+
+env:
+  IMAGE_NAME: petclinic-app
+  REGISTRY: us-central1-docker.pkg.dev/personal-learning-437518/pet-clinic
+
+jobs:
+  build-push-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Java build
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      
+      - name: Build with Maven
+        run: mvn clean install -DskipTests
+
+      # Docker build, push to GCR, and deploy to GKE
+      - name: Build, Push & Deploy
+        uses: marketplace/actions/docker-build-push-gcr-update-gke-deployment-action@v1.4
+        with:
+          service_account: ${{ secrets.GCLOUD_AUTH }}
+          zone: ${{ secrets.GKE_ZONE }}
+          project_id: ${{ secrets.PROJECT_ID }}
+          registry: $REGISTRY
+          image_name: $IMAGE_NAME
+          cluster: ${{ secrets.GKE_CLUSTER }}
+          namespace: default
+          deployment: petclinic-deployment
+          container: petclinic-container

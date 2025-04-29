@@ -26,7 +26,7 @@ jobs:
 
       # Docker build, push to GCR, and deploy to GKE
       - name: Build, Push & Deploy
-        uses: marketplace/actions/docker-build-push-gcr-update-gke-deployment-action@v1.4
+        uses: actions/docker-build-push-gcr-update-gke-deployment-action@v1.4
         with:
           service_account: ${{ secrets.GCLOUD_AUTH }}
           zone: ${{ secrets.GKE_ZONE }}

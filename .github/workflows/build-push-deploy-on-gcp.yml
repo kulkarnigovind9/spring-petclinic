@@ -41,13 +41,25 @@ jobs:
           push: true
           tags: ${{ env.IMAGE }}
 
-      - name: Deploy to GKE
-        uses: google-github-actions/deploy-gke@v0.0.1
+      - name: Configure kubectl
+        run: |-
+          gcloud container clusters get-credentials ${{ env.CLUSTER_NAME }} \
+            --zone ${{ secrets.GKE_ZONE }} \
+            --project ${{ env.PROJECT_ID }}
+
+      # Deploy all Kubernetes manifests
+      - name: Apply manifests
+        uses: ameydev/gke-kubectl-action@master
         with:
-          image: ${{ env.IMAGE }}
-          app_name: pet-clinic-app
-          region: us-central1
-          cluster_name: ${{ secrets.GKE_CLUSTER }}
-          project_id: personal-learning-437518
-          location: ${{ secrets.GKE_ZONE }}
-          manifest: k8s
+          args: apply -f k8s/ --recursive
+
+      # - name: Deploy to GKE
+      #   uses: google-github-actions/deploy-gke@v0.0.1
+      #   with:
+      #     image: ${{ env.IMAGE }}
+      #     app_name: pet-clinic-app
+      #     region: us-central1
+      #     cluster_name: ${{ secrets.GKE_CLUSTER }}
+      #     project_id: personal-learning-437518
+      #     location: ${{ secrets.GKE_ZONE }}
+      #     manifest: k8s

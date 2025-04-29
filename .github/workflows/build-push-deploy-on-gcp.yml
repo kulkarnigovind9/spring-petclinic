@@ -7,7 +7,7 @@ on:
 env:
   PROJECT_ID: ${{ secrets.PROJECT_ID }}
   GAR_LOCATION: gcr.io
-  IMAGE: gcr.io/${{ secrets.PROJECT_ID }}/petclinic-app:${{ github.sha }}
+  IMAGE: us-central1-docker.pkg.dev/personal-learning-437518/pet-clinic/petclinic-app:${{ github.sha }}
 
 jobs:
   build-push-deploy:

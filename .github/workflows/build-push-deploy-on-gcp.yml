@@ -43,7 +43,7 @@ jobs:
 
       - name: Configure kubectl
         run: |-
-          gcloud container clusters get-credentials ${{ env.CLUSTER_NAME }} \
+          gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER }} \
             --zone ${{ secrets.GKE_ZONE }} \
             --project ${{ env.PROJECT_ID }}
 

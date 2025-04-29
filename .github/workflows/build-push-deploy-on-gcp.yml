@@ -35,11 +35,18 @@ jobs:
       - name: Configure Docker for GCR
         run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
-      # - name: Build and Push Docker image
-      #   uses: docker/build-push-action@v5
-      #   with:
-      #     push: true
-      #     tags: ${{ env.IMAGE }}
+      - name: Build and Push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: ${{ env.IMAGE }}
+
+      - name: Update image tag in deployment.yaml
+        uses: Charlyzzz/update-k8s-image@v1.7.1
+        with:
+          manifest-path: k8s/petclinic.yml
+          new-image-tag: ${{ github.sha }}
+          container-name: workload
 
       - name: Configure kubectl
         uses: 'google-github-actions/get-gke-credentials@v2'
@@ -48,24 +55,7 @@ jobs:
           location: ${{ secrets.GKE_ZONE }}
           project_id: ${{ env.PROJECT_ID }}
 
-      # - name: Configure kubectl
-      #   run: |-
-      #     gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER }} \
-      #       --zone ${{ secrets.GKE_ZONE }} \
-      #       --project ${{ env.PROJECT_ID }}
-
       # Deploy all Kubernetes manifests
       # The KUBECONFIG env var is automatically exported and picked up by kubectl.
       - id: 'get-pods'
         run: 'kubectl apply -f k8s/ --recursive'
-
-      # - name: Deploy to GKE
-      #   uses: google-github-actions/deploy-gke@v0.0.1
-      #   with:
-      #     image: ${{ env.IMAGE }}
-      #     app_name: pet-clinic-app
-      #     region: us-central1
-      #     cluster_name: ${{ secrets.GKE_CLUSTER }}
-      #     project_id: personal-learning-437518
-      #     location: ${{ secrets.GKE_ZONE }}
-      #     manifest: k8s

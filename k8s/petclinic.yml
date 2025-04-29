@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: workload
-          image: dsyer/petclinic
+          image: us-central1-docker.pkg.dev/personal-learning-437518/pet-clinic/petclinic-app:fd994d9ace8300b788ec4912c5aa82998a367cc2
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: postgres

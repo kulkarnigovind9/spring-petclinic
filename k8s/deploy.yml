@@ -27,6 +27,12 @@ spec:
                 {
                   "management.endpoint.health.probes.add-additional-paths": true
                 }
+            - name: POSTGRES_URL
+              value: "jdbc:postgresql://demo-db/petclinic"
+            - name: POSTGRES_USER
+              value: user
+            - name: POSTGRES_PASS
+              value: pass
           ports:
             - name: http
               containerPort: 8080
